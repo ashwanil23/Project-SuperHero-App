@@ -43,8 +43,9 @@ To run the project, open MainActivity.kt and execute the app on an emulator or c
 
 ### 📁 Project Structure
 
-'📁 superhero-app/'
-'│'
+```markdown
+📁 superhero-app/
+│
 ├── 📂 app/                   # Main app directory
 │   ├── 📂 src/               # Source files
 │   │   ├── 📂 main/          # Core app files
