@@ -32,11 +32,12 @@ _(Add screenshots of your app here, showcasing the superhero list and detailed h
 ### Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com/ashwanil23/Project-SuperHero-App.git
+   git clone [https://github.com/ashwanil23/Project-SuperHero-App.git](https://github.com/ashwanil23/Project-SuperHero-App.git)
    
 2. Open the project in Android Studio.
 3. Sync the project with Gradle.
 4. Run the app on an emulator or connected device.
+5. 
 ## Run the Project
 To run the project, open MainActivity.kt and execute the app on an emulator or connected device.
 
@@ -70,13 +71,3 @@ Feel free to check the issues page.
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 
-### Key Markdown Elements Used:
-- **Bold Text**: `**bold text**`
-- **Headings**: `# Heading`, `## Subheading`, `### Small Heading`
-- **Lists**: `- Item` (for unordered list) and `1. Item` (for ordered list)
-- **Code Blocks**: Use triple backticks (```bash, ```kotlin, or simply ```) for code snippets.
-- **Hyperlinks**: `[link text](URL)`
-- **File and Directory Tree Structure**: Shown using indentation and vertical bars.
-- **Icons**: Emoji like `🦸`, `📱`, etc., for visual enhancements.
-
-Now you can directly paste this code into your GitHub repository's README.md file to create a formatted README.
