@@ -42,22 +42,7 @@ _(Add screenshots of your app here, showcasing the superhero list and detailed h
 To run the project, open MainActivity.kt and execute the app on an emulator or connected device.
 
 ### 📁 Project Structure
-📁 superhero-app/
-│
-├── 📂 app/                   # Main app directory
-│   ├── 📂 src/               # Source files
-│   │   ├── 📂 main/          # Core app files
-│   │   │   ├── 📂 java/      # Kotlin files
-│   │   │   │   ├── 📂 ui/    # UI-related files
-│   │   │   │   ├── 📂 model/ # Data models and resources
-│   │   │   │   │   ├── 📄 HeroDataResource.kt
-│   │   │   │   │   ├── 📄 Hero.kt
-│   │   │   │   ├── 📂 viewmodel/ # ViewModels
-│   │   │   │   │   ├── 📄 HomeScreenViewModel.kt
-│   │   │   ├── 📄 MainActivity.kt
-│   │   │   ├── 📄 SuperHeroApp.kt
-│   │   │   └── ...
-└── ...
+📁 superhero-app/ │ ├── 📂 app/ # Main app directory │ ├── 📂 src/ # Source files │ │ ├── 📂 main/ # Core app files │ │ │ ├── 📂 java/ # Kotlin files │ │ │ │ ├── 📂 ui/ # UI-related files │ │ │ │ ├── 📂 model/ # Data models and resources │ │ │ │ │ ├── 📄 HeroDataResource.kt │ │ │ │ │ ├── 📄 Hero.kt │ │ │ │ ├── 📂 viewmodel/ # ViewModels │ │ │ │ │ ├── 📄 HomeScreenViewModel.kt │ │ │ ├── 📄 MainActivity.kt │ │ │ ├── 📄 SuperHeroApp.kt │ │ │ └── ... └── ...
 
 ### 💡 Key Concepts
 ▫ Composable Functions: Build UI declaratively using Jetpack Compose.
