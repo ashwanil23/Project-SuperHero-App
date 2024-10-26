@@ -60,7 +60,7 @@ To run the project, open MainActivity.kt and execute the app on an emulator or c
 │   │   │   ├── 📄 SuperHeroApp.kt
 │   │   │   └── ...
 └── ...
-
+```
 ### 💡 Key Concepts
 ▫ Composable Functions: Build UI declaratively using Jetpack Compose.
 ▫ State Management: ViewModel and StateFlow manage state across screens.
