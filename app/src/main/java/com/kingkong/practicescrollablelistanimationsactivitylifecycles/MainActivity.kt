@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,9 +34,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.model.Hero
-import com.kingkong.practicescrollablelistanimationsactivitylifecycles.model.HeroDataResource
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.HeroProfile
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.ui.theme.PracticeScrollableListAnimationsActivityLifeCyclesTheme
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
 
 private const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
@@ -90,7 +93,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SuperHeroApp(
-    homeScreenViewModel: HomeScreenViewModel = viewModel()
+    homeScreenViewModel: HomeScreenViewModel = viewModel(),
+    navController: NavHostController = rememberNavController()
 ) {
 //    val hero = Hero(
 //        R.string.hero1,
@@ -115,10 +119,27 @@ fun SuperHeroApp(
         topBar = {
             SuperHeroAppTopBar()
         }
-    ){
+    ){innerPadding ->
+        val uiState by homeScreenViewModel.uiState.collectAsState()
+        NavHost(
+            navController = navController,
+            startDestination = Routes.HERO_LIST
+        ) {
+            composable(route = Routes.HERO_LIST){
+                ScrollableHeroList(
+                    homeScreenViewModel,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+            composable(route = Routes.HERO_PROFILE){
+                HeroProfile(
+                    homeScreenViewModel,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+        }
         //        val heroes = HeroDataResource.heroList
         //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
-        ScrollableHeroList(homeScreenViewModel, modifier = Modifier.padding(it))
     }
 
 }
@@ -138,14 +159,14 @@ fun SuperHeroAppTopBar() {
             text = "Super Hero",
             style = MaterialTheme.typography.displayMedium,
         )
-    },navigationIcon = {
-        IconButton(onClick = { /* do something */ }) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Localized description"
-            )
-        }
-    },
+        },navigationIcon = {
+            IconButton(onClick = { /* do something */ }) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Localized description"
+                )
+            }
+        },
         actions = {
             IconButton(onClick = { notificationClicked = !notificationClicked }) {
                 if (!notificationClicked)Icon(imageVector = Icons.Outlined.Notifications,
