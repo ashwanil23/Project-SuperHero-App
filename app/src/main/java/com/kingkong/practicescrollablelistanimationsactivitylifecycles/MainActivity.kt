@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,9 +36,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.model.Hero
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.HeroProfile
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.ui.theme.PracticeScrollableListAnimationsActivityLifeCyclesTheme
@@ -91,6 +95,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuperHeroApp(
     homeScreenViewModel: HomeScreenViewModel = viewModel(),
@@ -113,40 +118,63 @@ fun SuperHeroApp(
 //            ScrollableHeroListItem(hero = hero)
 //        }
 //    }
+        //        val heroes = HeroDataResource.heroList
+        //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
+
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = backStackEntry?.destination?.route?: Routes.HERO_LIST
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
         topBar = {
-            SuperHeroAppTopBar()
+            SuperHeroAppTopBar(
+                scrollBehavior,
+                currentScreen = currentScreen,
+                canNavigateBack = navController.previousBackStackEntry != null,
+                navigateUp = {navController.navigateUp()}
+            )
         }
-    ){innerPadding ->
+    ) { innerPadding ->
         val uiState by homeScreenViewModel.uiState.collectAsState()
         NavHost(
             navController = navController,
             startDestination = Routes.HERO_LIST
         ) {
-            composable(route = Routes.HERO_LIST){
+            composable(route = Routes.HERO_LIST) {
                 ScrollableHeroList(
                     homeScreenViewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    onHeroSelected = { heroId ->
+                        navController.navigate("hero_profile/$heroId")
+                    }
                 )
             }
-            composable(route = Routes.HERO_PROFILE){
+            composable(
+                route = Routes.HERO_PROFILE,
+                arguments = listOf(navArgument("heroId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val heroId = backStackEntry.arguments?.getInt("heroId") ?: 0
                 HeroProfile(
                     homeScreenViewModel,
-                    modifier = Modifier.padding(innerPadding)
+                    modifier = Modifier.padding(innerPadding),
+                    heroId = heroId
                 )
             }
+            //        val heroes = HeroDataResource.heroList
+            //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
         }
-        //        val heroes = HeroDataResource.heroList
-        //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
     }
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuperHeroAppTopBar() {
+fun SuperHeroAppTopBar(
+    scrollBehavior: TopAppBarScrollBehavior,
+    currentScreen: String,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit
+) {
 
     var notificationClicked by rememberSaveable {
         mutableStateOf(false)
@@ -160,11 +188,13 @@ fun SuperHeroAppTopBar() {
             style = MaterialTheme.typography.displayMedium,
         )
         },navigationIcon = {
-            IconButton(onClick = { /* do something */ }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Localized description"
-                )
+            if (canNavigateBack){
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Localized description"
+                    )
+                }
             }
         },
         actions = {
@@ -197,11 +227,13 @@ fun SuperHeroAppTopBar() {
 @Composable
 fun ScrollableHeroListItemPreview() {
     val hero = Hero(
+        id = 1,
         R.string.hero1,
         R.string.description1,
-        R.drawable.android_superhero1
+        R.drawable.android_superhero1,
+        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
     )
     PracticeScrollableListAnimationsActivityLifeCyclesTheme {
-        ScrollableHeroListItem(hero = hero)
+        ScrollableHeroListItem(hero = hero, onClick = {})
     }
 }

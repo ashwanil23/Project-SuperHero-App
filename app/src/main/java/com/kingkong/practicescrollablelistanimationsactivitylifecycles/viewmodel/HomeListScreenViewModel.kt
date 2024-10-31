@@ -20,4 +20,8 @@ class HomeScreenViewModel: ViewModel() {
         // Simulate loading data
         _uiState.value = HomeScreenUiState(heroes = HeroDataResource.heroList)
     }
+
+    fun getHeroById(heroId: Int): Hero? {
+        return _uiState.value.heroes.find { it.id == heroId }
+    }
 }

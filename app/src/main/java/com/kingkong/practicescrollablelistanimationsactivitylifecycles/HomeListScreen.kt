@@ -116,6 +116,7 @@ fun ScrollableHeroList(
     //heroes: List<Hero>,
     homeScreenViewModel: HomeScreenViewModel = viewModel(),
     modifier: Modifier,
+    onHeroSelected: (Int) -> Unit,
     contentPadding: PaddingValues = PaddingValues(0.dp)
 ) {
     val homeScreenUiState by homeScreenViewModel.uiState.collectAsState()
@@ -148,6 +149,7 @@ fun ScrollableHeroList(
                 homeScreenUiState.heroes) { index, hero ->
                 ScrollableHeroListItem(
                     hero = hero,
+                    onClick = {onHeroSelected(hero.id)},
                     modifier = Modifier
                         .padding(
                             horizontal = dimensionResource(R.dimen.xsmall),
@@ -170,7 +172,8 @@ fun ScrollableHeroList(
 @Composable
 fun ScrollableHeroListItem(
     modifier: Modifier = Modifier,
-    hero: Hero
+    hero: Hero,
+    onClick:()-> Unit,
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
@@ -207,7 +210,7 @@ fun ScrollableHeroListItem(
         ) { targetExpanded ->
             if (targetExpanded) {
                 Log.i(TAG,"Expanded")
-                ExpandedHeroContent(hero = hero)
+                ExpandedHeroContent(hero = hero,onClick)
 
             } else {
                 HeroIconContent(hero = hero)
@@ -218,7 +221,9 @@ fun ScrollableHeroListItem(
 }
 
 @Composable
-fun HeroIconContent(hero: Hero) {
+fun HeroIconContent(
+    hero: Hero
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -249,7 +254,10 @@ fun HeroIconContent(hero: Hero) {
 }
 
 @Composable
-fun ExpandedHeroContent(hero: Hero) {
+fun ExpandedHeroContent(
+    hero: Hero,
+    onClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -273,7 +281,7 @@ fun ExpandedHeroContent(hero: Hero) {
             style = MaterialTheme.typography.bodyLarge
         )
         TextButton(
-            onClick = { }
+            onClick = onClick
         ) {
             Text("Explore ${stringResource(id = hero.nameRes)}")
         }
@@ -284,12 +292,14 @@ fun ExpandedHeroContent(hero: Hero) {
 @Composable
 fun ScrollableHeroListItemPreviewHomeScreen() {
     val hero = Hero(
+        id = 1,
         R.string.hero1,
         R.string.description1,
-        R.drawable.android_superhero1
+        R.drawable.android_superhero1,
+        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
     )
     PracticeScrollableListAnimationsActivityLifeCyclesTheme {
-        ScrollableHeroListItem(hero = hero)
+        ScrollableHeroListItem(hero = hero, onClick = {})
     }
 }
 
