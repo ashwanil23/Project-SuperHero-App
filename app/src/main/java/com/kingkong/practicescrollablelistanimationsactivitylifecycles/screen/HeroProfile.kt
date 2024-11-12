@@ -2,25 +2,29 @@ package com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.R
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.model.Hero
@@ -33,7 +37,7 @@ fun HeroProfile(
     heroId: Int,
 ) {
     val hero = viewModel.getHeroById(heroId)
-
+    var selectedImage by remember { mutableStateOf<Int?>(null) }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -49,12 +53,20 @@ fun HeroProfile(
                     .padding(32.dp)
             ) {
                 HeroMainContent(hero)
-                HeroAdditionalImages(hero.additionalImages)
+                HorizontalDivider(
+                    modifier = Modifier
+                        .weight(1f),
+                    thickness = 2.dp,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
+                HeroAdditionalImages(hero.additionalImages) { imageRes -> selectedImage = imageRes }
             }
         } else {
             Text("Hero not found", style = MaterialTheme.typography.displaySmall)
         }
     }
+    selectedImage?.let { imageRes -> ImageDialog(imageRes) { selectedImage = null } }
 }
 
 @Composable
@@ -70,10 +82,31 @@ fun HeroMainContent(hero: Hero) {
                 .background(MaterialTheme.colorScheme.surface)
         )
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
-        Text(
-            text = stringResource(id = hero.nameRes),
-            style = MaterialTheme.typography.displaySmall
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            HorizontalDivider(
+                modifier = Modifier
+                    .weight(1f),
+                thickness = 2.dp,
+                color = MaterialTheme.colorScheme.inverseSurface
+            )
+            Text(
+                text = stringResource(id = hero.nameRes),
+                style = MaterialTheme.typography.displaySmall,
+                modifier = Modifier
+                    .padding(horizontal = dimensionResource(R.dimen.small))
+            )
+            HorizontalDivider(
+                modifier = Modifier
+                    .weight(1f),
+                thickness = 2.dp,
+                color = MaterialTheme.colorScheme.inverseSurface
+            )
+        }
         Text(
             text = stringResource(id = hero.descriptionRes),
             style = MaterialTheme.typography.bodyLarge
@@ -83,7 +116,7 @@ fun HeroMainContent(hero: Hero) {
 }
 
 @Composable
-fun HeroAdditionalImages(images: List<Int>) {
+fun HeroAdditionalImages(images: List<Int>, onClick: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .height(128.dp)
@@ -97,8 +130,26 @@ fun HeroAdditionalImages(images: List<Int>) {
                     .padding(dimensionResource(R.dimen.small))
                     .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
                     .background(MaterialTheme.colorScheme.surface)
+                    .clickable { onClick(item) }
             )
         }
     }
 }
 
+@Composable
+fun ImageDialog(imageRes: Int, onDismiss: () -> Unit) {
+    Dialog(onDismissRequest = onDismiss) {
+        Box( contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.8f))
+                .clickable { onDismiss() } ) {
+            Image( painter = painterResource(id = imageRes),
+                contentDescription = null, modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
+            )
+        }
+    }
+}
