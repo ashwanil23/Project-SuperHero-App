@@ -1,5 +1,6 @@
 package com.kingkong.practicescrollablelistanimationsactivitylifecycles
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -44,6 +45,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.model.Hero
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.HeroProfile
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.ModelNavigationDrawer
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.ui.theme.PracticeScrollableListAnimationsActivityLifeCyclesTheme
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
 
@@ -121,48 +123,55 @@ fun SuperHeroApp(
         //        val heroes = HeroDataResource.heroList
         //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
 
+    var isMenuClicked by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentScreen = backStackEntry?.destination?.route?: Routes.HERO_LIST
-    Scaffold(
-        modifier = Modifier
-            .fillMaxSize(),
-        topBar = {
-            SuperHeroAppTopBar(
-                scrollBehavior,
-                currentScreen = currentScreen,
-                canNavigateBack = navController.previousBackStackEntry != null,
-                navigateUp = {navController.navigateUp()}
-            )
-        }
-    ) { innerPadding ->
-        val uiState by homeScreenViewModel.uiState.collectAsState()
-        NavHost(
-            navController = navController,
-            startDestination = Routes.HERO_LIST
-        ) {
-            composable(route = Routes.HERO_LIST) {
-                ScrollableHeroList(
-                    homeScreenViewModel,
-                    modifier = Modifier.padding(innerPadding),
-                    onHeroSelected = { heroId ->
-                        navController.navigate("hero_profile/$heroId")
-                    }
+    ModelNavigationDrawer(
+        isMenuClicked = isMenuClicked,
+        onDrawerClose = { isMenuClicked = false }
+    ){
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize(),
+            topBar = {
+                SuperHeroAppTopBar(
+                    scrollBehavior,
+                    currentScreen = currentScreen,
+                    canNavigateBack = navController.previousBackStackEntry != null,
+                    navigateUp = {navController.navigateUp()},
+                    onMenuClicked = { isMenuClicked = !isMenuClicked }
                 )
             }
-            composable(
-                route = Routes.HERO_PROFILE,
-                arguments = listOf(navArgument("heroId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val heroId = backStackEntry.arguments?.getInt("heroId") ?: 0
-                HeroProfile(
-                    homeScreenViewModel,
-                    modifier = Modifier.padding(innerPadding),
-                    heroId = heroId
-                )
+        ) { innerPadding ->
+            val uiState by homeScreenViewModel.uiState.collectAsState()
+            NavHost(
+                navController = navController,
+                startDestination = Routes.HERO_LIST
+            ) {
+                composable(route = Routes.HERO_LIST) {
+                    ScrollableHeroList(
+                        homeScreenViewModel,
+                        modifier = Modifier.padding(innerPadding),
+                        onHeroSelected = { heroId ->
+                            navController.navigate("hero_profile/$heroId")
+                        }
+                    )
+                }
+                composable(
+                    route = Routes.HERO_PROFILE,
+                    arguments = listOf(navArgument("heroId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val heroId = backStackEntry.arguments?.getInt("heroId") ?: 0
+                    HeroProfile(
+                        homeScreenViewModel,
+                        modifier = Modifier.padding(innerPadding),
+                        heroId = heroId
+                    )
+                }
+                //        val heroes = HeroDataResource.heroList
+                //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
             }
-            //        val heroes = HeroDataResource.heroList
-            //        ScrollableHeroList(heroes = heroes, modifier = Modifier.padding(it))
         }
     }
 }
@@ -173,15 +182,18 @@ fun SuperHeroAppTopBar(
     scrollBehavior: TopAppBarScrollBehavior,
     currentScreen: String,
     canNavigateBack: Boolean,
-    navigateUp: () -> Unit
+    navigateUp: () -> Unit,
+    onMenuClicked: () -> Unit
 ) {
 
     var notificationClicked by rememberSaveable {
         mutableStateOf(false)
     }
+    var isMenuClicked by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
-
     CenterAlignedTopAppBar(
         title = { Text(
             text = "Super Hero",
@@ -208,7 +220,7 @@ fun SuperHeroAppTopBar(
                     tint = Color.Red
                 )
             }
-            IconButton(onClick = { /* do something */ }) {
+            IconButton(onClick = {onMenuClicked()}) {
                 Icon(
                     imageVector = Icons.Filled.Menu,
                     contentDescription = "Localized description"
@@ -216,7 +228,8 @@ fun SuperHeroAppTopBar(
             }
         },
         scrollBehavior = scrollBehavior,
-        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.secondaryContainer))
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+    )
 
 }
 
