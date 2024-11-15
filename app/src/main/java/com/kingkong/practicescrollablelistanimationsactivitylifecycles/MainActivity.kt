@@ -1,6 +1,5 @@
 package com.kingkong.practicescrollablelistanimationsactivitylifecycles
 
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -48,6 +47,7 @@ import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.He
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen.ModelNavigationDrawer
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.ui.theme.PracticeScrollableListAnimationsActivityLifeCyclesTheme
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
 
 private const val TAG = "MainActivity"
 class MainActivity : ComponentActivity() {
@@ -57,9 +57,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PracticeScrollableListAnimationsActivityLifeCyclesTheme {
-                if(!isSystemInDarkTheme()){
-
-                }
                 SuperHeroApp()
             }
         }
@@ -101,7 +98,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SuperHeroApp(
     homeScreenViewModel: HomeScreenViewModel = viewModel(),
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    navigationItemViewModel: NavigationItemViewModel = viewModel()
 ) {
 //    val hero = Hero(
 //        R.string.hero1,

@@ -65,5 +65,16 @@
     <string name="hero20">Lumina</string>
     <string name="description20">Lumina can harness the power of the sun, creating solar blasts and beams of concentrated light. She can also fly by channeling solar energy and heal herself and others using the same energy. Backstory: Lumina\'s powers manifested during a solar eclipse, linking her abilities to the sun\'s energy. She trains rigorously to maintain control over her immense power, using it to illuminate the path of justice. Power Level: High Notable Fights: Protected the city from the shadowy villain Eclipse by outshining his darkness with her radiant solar energy.</string>
 
+    <string name="home">Home</string>
+    <string name="hero_list">Hero List</string>
+    <string name="favorites">Favorites</string>
+    <string name="explore">Explore</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+    <string name="feedback">Feedback</string>
+    <string name="notifications">Notifications</string>
+    <string name="achievements">Achievements</string>
+    <string name="logout">Logout</string>
 
 </resources>
