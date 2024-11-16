@@ -11,4 +11,8 @@ data class NavigationItem(
     val onClick: () -> Unit,
 )
 
-
+data class BottomNavItem(
+    val title: Int,
+    val icon: Int,
+    val route: String
+)

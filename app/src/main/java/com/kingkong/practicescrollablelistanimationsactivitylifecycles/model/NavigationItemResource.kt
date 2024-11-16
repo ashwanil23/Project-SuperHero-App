@@ -96,3 +96,13 @@ object NavigationItemResource {
         }
     )
 }
+
+object BottomNavItems {
+    val bottomNavigationItems = listOf(
+        BottomNavItem(title = R.string.home, icon = R.drawable.ic_home, route = "home"),
+        BottomNavItem(title = R.string.hero_list, icon = R.drawable.ic_list, route = "hero_list"),
+        BottomNavItem(title = R.string.explore, icon = R.drawable.ic_explore, route = "explore"),
+        BottomNavItem(title = R.string.favorites, icon = R.drawable.ic_favorite, route = "favorites"),
+        BottomNavItem(title = R.string.profile, icon = R.drawable.ic_profile, route = "profile")
+    )
+}
