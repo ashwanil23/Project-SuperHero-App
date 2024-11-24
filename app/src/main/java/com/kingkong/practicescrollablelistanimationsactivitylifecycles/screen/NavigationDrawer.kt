@@ -255,7 +255,6 @@ fun SuperHeroAppTopBar(
         scrollBehavior = scrollBehavior,
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
     )
-
 }
 
 

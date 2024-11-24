@@ -103,6 +103,7 @@ object BottomNavItems {
         BottomNavItem(title = R.string.hero_list, icon = R.drawable.ic_list, route = "hero_list"),
         BottomNavItem(title = R.string.explore, icon = R.drawable.ic_explore, route = "explore"),
         BottomNavItem(title = R.string.favorites, icon = R.drawable.ic_favorite, route = "favorites"),
-        BottomNavItem(title = R.string.profile, icon = R.drawable.ic_profile, route = "profile")
+        BottomNavItem(title = R.string.profile, icon = R.drawable.ic_profile, route = "profile"),
+        BottomNavItem(title = R.string.support, icon = R.drawable.ic_support, route = "support"),
     )
 }

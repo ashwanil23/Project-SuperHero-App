@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 data class HomeScreenUiState(
-    val heroes: List<Hero> = HeroDataResource.heroList
+    val heroes: List<Hero> = HeroDataResource.heroList,
+    val isShowingHomepage: Boolean = true
 )
 class HomeScreenViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(HomeScreenUiState())

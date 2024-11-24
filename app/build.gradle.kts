@@ -75,4 +75,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.compose.material:material-icons-extended:<version>")
     implementation("androidx.compose.material3:material3-window-size-class")
+    implementation ("androidx.compose.material:material:1.3.0")
 }
