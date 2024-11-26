@@ -33,10 +33,10 @@ fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel,isDarkTheme
     ) {
         BottomNavigation(
             backgroundColor = when(isDarkTheme){
-                true -> MaterialTheme.colorScheme.primaryContainer
-                else -> MaterialTheme.colorScheme.primary
+                true -> MaterialTheme.colorScheme.surface
+                else -> MaterialTheme.colorScheme.surface
             },
-            contentColor = Color.White
+            contentColor = MaterialTheme.colorScheme.onSurface
         ) {
             BottomNavigationItem(
                 selected = navigationUiState.currentPage == Page.HERO_LIST,

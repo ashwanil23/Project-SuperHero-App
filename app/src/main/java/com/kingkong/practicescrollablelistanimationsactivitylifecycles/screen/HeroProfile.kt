@@ -4,11 +4,25 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Comment
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +34,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -73,15 +86,33 @@ fun HeroProfile(
 @Composable
 fun HeroMainContent(hero: Hero) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        Image(
-            painter = painterResource(id = hero.imageRes),
-            contentDescription = null,
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(1f)
-                .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
-                .background(MaterialTheme.colorScheme.surface)
-        )
+            .fillMaxSize(),
+        ) {
+            Image(
+                painter = painterResource(id = hero.imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
+                    .background(MaterialTheme.colorScheme.surface)
+            )
+            IconButton(
+                onClick = {},
+                modifier = Modifier
+                    .align(Alignment.TopEnd),
+                enabled = false,
+                colors = IconButtonDefaults.iconButtonColors(Color.White)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.Comment,
+                    contentDescription = "Add Comment",
+                    tint = Color.White
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.medium)))
         Row(
             modifier = Modifier
@@ -156,79 +187,3 @@ fun ImageDialog(imageRes: Int, onDismiss: () -> Unit) {
     }
 }
 
-
-//fun saveImage(context: Context, drawableId: Int, fileName: String) {
-//    val drawable = context.getDrawable(drawableId)
-//    val bitmap = (drawable as BitmapDrawable).bitmap
-//
-//    val file = File(context.getExternalFilesDir(null), "$fileName.jpg")
-//
-//    try {
-//        val outputStream = FileOutputStream(file)
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-//        outputStream.flush()
-//        outputStream.close()
-//    } catch (e: IOException) {
-//        e.printStackTrace()
-//    }
-//}
-//
-//
-//@Composable
-//fun ImageDialog(imageRes: Int, onDismiss: () -> Unit) {
-//    val context = LocalContext.current
-//    var showPermissionDialog by remember { mutableStateOf(false) }
-//
-//    Dialog(onDismissRequest = onDismiss) {
-//        Box(
-//            contentAlignment = Alignment.Center,
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(Color.Black.copy(alpha = 0.8f))
-//                .clickable { onDismiss() }
-//        ) {
-//            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                Image(
-//                    painter = painterResource(id = imageRes),
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .aspectRatio(1f)
-//                        .clip(RoundedCornerShape(dimensionResource(R.dimen.small)))
-//                )
-//                Spacer(modifier = Modifier.height(16.dp))
-//                Button(onClick = {
-//                    val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                    if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
-//                        saveImage(context, imageRes, "downloaded_image")
-//                    } else {
-//                        ActivityCompat.requestPermissions(context as Activity, arrayOf(permission), 0)
-//                    }
-//                }) {
-//                    Text("Download Image")
-//                }
-//            }
-//        }
-//    }
-//
-//    if (showPermissionDialog) {
-//        AlertDialog(
-//            onDismissRequest = { showPermissionDialog = false },
-//            title = { Text("Storage Permission Required") },
-//            text = { Text("Please grant storage permission to download the image.") },
-//            confirmButton = {
-//                Button(onClick = {
-//                    showPermissionDialog = false
-//                    ActivityCompat.requestPermissions(context as Activity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 0)
-//                }) {
-//                    Text("Grant Permission")
-//                }
-//            },
-//            dismissButton = {
-//                Button(onClick = { showPermissionDialog = false }) {
-//                    Text("Cancel")
-//                }
-//            }
-//        )
-//    }
-//}
