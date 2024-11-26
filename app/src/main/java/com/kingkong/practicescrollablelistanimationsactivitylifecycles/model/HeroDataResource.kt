@@ -5,48 +5,6 @@ import com.kingkong.practicescrollablelistanimationsactivitylifecycles.R
 object HeroDataResource {
     val heroList = listOf(
         Hero(
-            id = 1,
-            nameRes = R.string.hero1,
-            descriptionRes = R.string.description1,
-            imageRes = R.drawable.android_superhero1,
-            additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
-        ),
-        Hero(
-            id = 2,
-            nameRes = R.string.hero2,
-            descriptionRes = R.string.description2,
-            imageRes = R.drawable.android_superhero2,
-            additionalImages = listOf(R.drawable.image4, R.drawable.image5, R.drawable.image6)
-        ),
-        Hero(
-            id = 3,
-            nameRes = R.string.hero3,
-            descriptionRes = R.string.description3,
-            imageRes = R.drawable.android_superhero3,
-            additionalImages = listOf(R.drawable.image7, R.drawable.image8, R.drawable.image9)
-        ),
-        Hero(
-            id = 4,
-            nameRes = R.string.hero4,
-            descriptionRes = R.string.description4,
-            imageRes = R.drawable.android_superhero4,
-            additionalImages = listOf(R.drawable.image10, R.drawable.image11, R.drawable.image12)
-        ),
-        Hero(
-            id = 5,
-            nameRes = R.string.hero5,
-            descriptionRes = R.string.description5,
-            imageRes = R.drawable.android_superhero5,
-            additionalImages = listOf(R.drawable.image13, R.drawable.image14, R.drawable.image15)
-        ),
-        Hero(
-            id = 6,
-            nameRes = R.string.hero6,
-            descriptionRes = R.string.description6,
-            imageRes = R.drawable.android_superhero6,
-            additionalImages = listOf(R.drawable.image16, R.drawable.image17, R.drawable.image18)
-        ),
-        Hero(
             id = 7,
             nameRes = R.string.hero7,
             descriptionRes = R.string.description7,
@@ -94,7 +52,49 @@ object HeroDataResource {
             descriptionRes = R.string.description13,
             imageRes = R.drawable.android_superhero13,
             additionalImages = listOf(R.drawable.image3, R.drawable.image4, R.drawable.image5)
-        )
+        ),
+        Hero(
+            id = 1,
+            nameRes = R.string.hero1,
+            descriptionRes = R.string.description1,
+            imageRes = R.drawable.android_superhero1,
+            additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
+        ),
+        Hero(
+            id = 2,
+            nameRes = R.string.hero2,
+            descriptionRes = R.string.description2,
+            imageRes = R.drawable.android_superhero2,
+            additionalImages = listOf(R.drawable.image4, R.drawable.image5, R.drawable.image6)
+        ),
+        Hero(
+            id = 3,
+            nameRes = R.string.hero3,
+            descriptionRes = R.string.description3,
+            imageRes = R.drawable.android_superhero3,
+            additionalImages = listOf(R.drawable.image7, R.drawable.image8, R.drawable.image9)
+        ),
+        Hero(
+            id = 4,
+            nameRes = R.string.hero4,
+            descriptionRes = R.string.description4,
+            imageRes = R.drawable.android_superhero4,
+            additionalImages = listOf(R.drawable.image10, R.drawable.image11, R.drawable.image12)
+        ),
+        Hero(
+            id = 5,
+            nameRes = R.string.hero5,
+            descriptionRes = R.string.description5,
+            imageRes = R.drawable.android_superhero5,
+            additionalImages = listOf(R.drawable.image13, R.drawable.image14, R.drawable.image15)
+        ),
+        Hero(
+            id = 6,
+            nameRes = R.string.hero6,
+            descriptionRes = R.string.description6,
+            imageRes = R.drawable.android_superhero6,
+            additionalImages = listOf(R.drawable.image16, R.drawable.image17, R.drawable.image18)
+        ),
     )
 }
 

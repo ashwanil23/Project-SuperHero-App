@@ -9,10 +9,12 @@ import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
@@ -21,7 +23,7 @@ import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
 
 @Composable
-fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel) {
+fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel,isDarkTheme: Boolean) {
     val navigationUiState by navigationViewModel.uiState.collectAsState()
 
     Column(
@@ -29,7 +31,13 @@ fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel) {
             .fillMaxWidth()
             .padding(bottom = dimensionResource(R.dimen.Large)),
     ) {
-        BottomNavigation {
+        BottomNavigation(
+            backgroundColor = when(isDarkTheme){
+                true -> MaterialTheme.colorScheme.primaryContainer
+                else -> MaterialTheme.colorScheme.primary
+            },
+            contentColor = Color.White
+        ) {
             BottomNavigationItem(
                 selected = navigationUiState.currentPage == Page.HERO_LIST,
                 onClick = { navigationViewModel.selectPage(Page.HERO_LIST) },

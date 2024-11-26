@@ -7,8 +7,8 @@ import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass
 data class NavigationItem(
     @StringRes val titleRes: Int,
     @DrawableRes val iconRes: Int,
+    val route: String,
     val roles: List<UserRole> = listOf(UserRole.REGULAR_USER, UserRole.ADMIN),
-    val onClick: () -> Unit,
 )
 
 data class BottomNavItem(

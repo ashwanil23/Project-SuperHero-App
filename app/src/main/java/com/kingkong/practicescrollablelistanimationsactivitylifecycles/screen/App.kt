@@ -1,32 +1,26 @@
 package com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen
 
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.Routes
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.AppNavType
-import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.Page
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
+
 //
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
@@ -151,71 +145,40 @@ fun SuperHeroApp(
         WindowWidthSizeClass.Expanded -> AppNavType.PERMANENT_NAVIGATION_DRAWER
         else -> AppNavType.BOTTOM_NAVIGATION
     }
-
-    ModelNavigationDrawer(
-        isMenuClicked = isMenuClicked,
-        onDrawerClose = { isMenuClicked = false },
-        navigationItemViewModel = navigationItemViewModel
-    ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                SuperHeroAppTopBar(
-                    scrollBehavior = scrollBehavior,
-                    currentScreen = currentScreen,
-                    canNavigateBack = navController.previousBackStackEntry != null,
-                    navigateUp = { navController.navigateUp() },
-                    onMenuClicked = { isMenuClicked = !isMenuClicked }
+    var isDarkTheme by rememberSaveable { mutableStateOf(false) }
+    MaterialTheme( colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme() ){
+        ModelNavigationDrawer(
+            isMenuClicked = isMenuClicked,
+            navController = navController,
+            onDrawerClose = { isMenuClicked = false },
+            navigationItemViewModel = navigationItemViewModel
+        ) {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    SuperHeroAppTopBar(
+                        isDarkTheme = isDarkTheme,
+                        onToggleTheme = { isDarkTheme = it },
+                        scrollBehavior = scrollBehavior,
+                        currentScreen = currentScreen,
+                        canNavigateBack = navController.previousBackStackEntry != null,
+                        navigateUp = { navController.navigateUp() },
+                        onMenuClicked = { isMenuClicked = !isMenuClicked }
+                    )
+                },
+                bottomBar = {
+                    if (navigationType == AppNavType.BOTTOM_NAVIGATION) {
+                        BottomNavigationBar(navigationViewModel, isDarkTheme = isDarkTheme)
+                    }
+                }
+            ) { innerPadding ->
+                MyAppNavigation(
+                    modifier = Modifier.padding(innerPadding),
+                    homeScreenViewModel,
+                    navController,
+                    navigationViewModel
                 )
-            },
-            bottomBar = {
-                if (navigationType == AppNavType.BOTTOM_NAVIGATION) {
-                    BottomNavigationBar(navigationViewModel)
-                }
             }
-        ) { innerPadding ->
-            val uiState by homeScreenViewModel.uiState.collectAsState()
-            var startDestination = when(bottomNavUiState.currentPage){
-                Page.PROFILE -> Routes.PROFILE
-                Page.EXPLORE-> Routes.EXPLORE
-                Page.FAVORITES -> Routes.FAVORITES
-                else->Routes.HERO_LIST
-            }
-            NavHost(
-                navController = navController,
-                startDestination = startDestination
-            ) {
-                composable(route = Routes.HERO_LIST) {
-                    ScrollableHeroList(
-                        homeScreenViewModel,
-                        modifier = Modifier.padding(innerPadding),
-                        onHeroSelected = { heroId ->
-                            navController.navigate("hero_profile/$heroId")
-                        }
-                    )
-                }
-                composable(
-                    route = Routes.HERO_PROFILE,
-                    arguments = listOf(navArgument("heroId") { type = NavType.IntType })
-                ) { backStackEntry ->
-                    val heroId = backStackEntry.arguments?.getInt("heroId") ?: 0
-                    HeroProfile(
-                        homeScreenViewModel,
-                        modifier = Modifier.padding(innerPadding),
-                        heroId = heroId
-                    )
-                }
-                composable(route = Routes.PROFILE){
-                    UserProfile()
-                }
-                composable(route = Routes.FAVORITES){
-                    Favorites()
-                }
-                composable(route = Routes.EXPLORE){
-                    Explore()
-                }
-            }
-
         }
     }
 }
