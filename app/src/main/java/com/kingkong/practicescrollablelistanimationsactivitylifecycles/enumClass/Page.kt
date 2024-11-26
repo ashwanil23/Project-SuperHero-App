@@ -3,7 +3,6 @@ package com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClas
 enum class Page {
     HERO_LIST,
     HERO_PROFILE,
-    HOME,
     FAVORITES,
     EXPLORE,
     PROFILE

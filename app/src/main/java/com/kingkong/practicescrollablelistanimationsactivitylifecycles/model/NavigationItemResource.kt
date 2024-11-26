@@ -8,14 +8,6 @@ import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass
 object NavigationItemResource {
     val navigationItems = listOf(
         NavigationItem(
-            titleRes = R.string.home,
-            iconRes = R.drawable.ic_home,
-            roles = listOf(UserRole.ADMIN, UserRole.REGULAR_USER)
-        ) {
-            // Navigate to Home screen
-        },
-
-        NavigationItem(
             titleRes = R.string.hero_list,
             iconRes = R.drawable.ic_list,
             roles = listOf(UserRole.ADMIN, UserRole.REGULAR_USER)

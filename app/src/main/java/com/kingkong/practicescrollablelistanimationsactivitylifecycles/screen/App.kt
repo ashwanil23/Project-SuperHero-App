@@ -24,6 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.Routes
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.AppNavType
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.Page
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
 //
@@ -139,6 +140,7 @@ fun SuperHeroApp(
     windowSize: WindowWidthSizeClass,
     navigationViewModel: NavigationItemViewModel = viewModel()
 ) {
+    val bottomNavUiState by navigationViewModel.uiState.collectAsState()
     var isMenuClicked by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -173,9 +175,15 @@ fun SuperHeroApp(
             }
         ) { innerPadding ->
             val uiState by homeScreenViewModel.uiState.collectAsState()
+            var startDestination = when(bottomNavUiState.currentPage){
+                Page.PROFILE -> Routes.PROFILE
+                Page.EXPLORE-> Routes.EXPLORE
+                Page.FAVORITES -> Routes.FAVORITES
+                else->Routes.HERO_LIST
+            }
             NavHost(
                 navController = navController,
-                startDestination = Routes.HERO_LIST
+                startDestination = startDestination
             ) {
                 composable(route = Routes.HERO_LIST) {
                     ScrollableHeroList(
@@ -197,7 +205,17 @@ fun SuperHeroApp(
                         heroId = heroId
                     )
                 }
+                composable(route = Routes.PROFILE){
+                    UserProfile()
+                }
+                composable(route = Routes.FAVORITES){
+                    Favorites()
+                }
+                composable(route = Routes.EXPLORE){
+                    Explore()
+                }
             }
+
         }
     }
 }

@@ -39,4 +39,8 @@ class NavigationItemViewModel : ViewModel() {
     fun selectPage(page: Page) {
         _uiState.value = NavigationItemUiState(currentPage = page)
     }
+
+    fun selectedPage(): Page{
+        return _uiState.value.currentPage
+    }
 }
