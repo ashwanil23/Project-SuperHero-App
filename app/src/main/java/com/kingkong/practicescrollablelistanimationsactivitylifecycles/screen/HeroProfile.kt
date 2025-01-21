@@ -81,6 +81,7 @@ fun HeroProfile(
         }
     }
     selectedImage?.let { imageRes -> ImageDialog(imageRes) { selectedImage = null } }
+
 }
 
 @Composable

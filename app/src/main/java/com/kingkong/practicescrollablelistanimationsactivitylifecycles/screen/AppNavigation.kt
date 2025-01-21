@@ -34,6 +34,7 @@ fun MyAppNavigation(
         Page.FEEDBACK-> Routes.FEEDBACK
         Page.NOTIFICATIONS -> Routes.NOTIFICATIONS
         Page.ACHIEVEMENTS -> Routes.ACHIEVEMENTS
+        Page.TERMS_AND_CONDITIONS -> Routes.TERMS_AND_CONDITIONS
         else-> Routes.HERO_LIST
     }
     NavHost(
@@ -61,29 +62,35 @@ fun MyAppNavigation(
             )
         }
         composable(route = Routes.PROFILE){
-            UserProfile()
+            UserProfile(modifier = modifier)
         }
         composable(route = Routes.FAVORITES){
-            Favorites()
+            Favorites(modifier = modifier)
         }
         composable(route = Routes.EXPLORE){
-            Explore()
+            Explore(modifier = modifier)
         }
         composable(route = Routes.SETTINGS){
-            Settings()
+            Settings(modifier = modifier)
         }
         composable(route = Routes.ABOUT){
             About(modifier = modifier)
         }
         composable(route = Routes.FEEDBACK){
-            FeedBack()
+            FeedBack(modifier = modifier)
         }
         composable(route = Routes.NOTIFICATIONS){
-            Notifications()
+            Notifications(modifier = modifier)
         }
         composable(route = Routes.ACHIEVEMENTS){
-            Achievements()
+            Achievements(modifier = modifier)
         }
-
+        composable(route = Routes.TERMS_AND_CONDITIONS){
+            TermsAndConditionsScreen(
+                modifier = modifier,
+                onAgree = { navController.navigate("hero_list") },
+                onCancel = { navController.popBackStack() }
+            )
+        }
     }
 }

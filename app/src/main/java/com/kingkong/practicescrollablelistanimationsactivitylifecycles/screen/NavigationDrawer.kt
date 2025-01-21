@@ -8,40 +8,25 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Brightness4
-import androidx.compose.material.icons.filled.Brightness7
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.outlined.Notifications
+//noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.material.TextButton
 import androidx.compose.material3.Card
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberDrawerState
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -52,22 +37,25 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.R
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.Routes
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.UserRole
+import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.HomeScreenViewModel
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun ModelNavigationDrawer(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     isMenuClicked: Boolean,
     onDrawerClose: () -> Unit,
+    homeListScreenViewModel: HomeScreenViewModel = viewModel(),
     navigationItemViewModel: NavigationItemViewModel = viewModel(),
     content: @Composable () -> Unit,
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val homeScreenUiState by homeListScreenViewModel.uiState.collectAsState()
     val navigationItemUiState by navigationItemViewModel.uiState.collectAsState()
 
     LaunchedEffect(isMenuClicked) {
@@ -118,74 +106,108 @@ fun ModelNavigationDrawer(
                     color = MaterialTheme.colorScheme.inverseSurface
                 )
                 Spacer(modifier = Modifier.padding(vertical = 1.dp))
-
-                Card(modifier = Modifier
-                    .fillMaxWidth()
-                    .height(220.dp)
-                    .padding(dimensionResource(R.dimen.medium))
+                LazyColumn(
+                    modifier = Modifier
                 ) {
-                    LazyHorizontalGrid(
-                        rows = GridCells.Fixed(1),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(8) { index ->
-                            Box(
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .weight(2f)
-                                    .padding(dimensionResource(R.dimen.small))
-                                    .background(MaterialTheme.colorScheme.primary)
+                    item{
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(160.dp)
+                                .padding(dimensionResource(R.dimen.medium))
+                        ) {
+                            LazyHorizontalGrid(
+                                rows = GridCells.Fixed(1),
+                                modifier = Modifier.fillMaxWidth()
+                            ) {
+                                items(8) { index ->
+                                    Box(
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .weight(2f)
+                                            .padding(dimensionResource(R.dimen.small))
+                                            .background(MaterialTheme.colorScheme.primary)
+                                    ) {
+                                        Text(
+                                            text = "Box ${index + 1}",
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onPrimary,
+                                            modifier = Modifier.align(Alignment.Center)
+                                        )
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                    item{
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(440.dp)
+                                .padding(dimensionResource(R.dimen.medium))
+                        ) {
+                            LazyColumn {
+                                items(navigationItemUiState.items) { item ->
+                                    Spacer(Modifier.padding(dimensionResource(R.dimen.xsmall)))
+                                    NavigationDrawerItem(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = dimensionResource(R.dimen.small)),
+                                        label = { Text(text = stringResource(id = item.titleRes)) },
+                                        icon = {
+                                            Icon(
+                                                painter = painterResource(id = item.iconRes),
+                                                contentDescription = null
+                                            )
+                                        },
+                                        selected = false,
+                                        onClick = {
+                                            navController.navigate(route = item.route)
+                                            scope.launch { drawerState.close() }
+                                        },
+                                        colors = NavigationDrawerItemDefaults
+                                            .colors(
+                                                unselectedContainerColor = Color.Transparent,
+                                                selectedContainerColor = Color.Transparent,
+                                                unselectedIconColor = LocalContentColor.current,
+                                                selectedIconColor = LocalContentColor.current,
+                                                unselectedTextColor = LocalContentColor.current,
+                                                selectedTextColor = LocalContentColor.current
+                                            )
+                                    )
+                                    Spacer(Modifier.padding(dimensionResource(R.dimen.xsmall)))
+                                }
+                            }
+                        }
+                    }
+
+                    item{
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ){
+                            TextButton(
+                                onClick = {
+                                    scope.launch{
+                                        drawerState.close()
+                                        navController.navigate(Routes.TERMS_AND_CONDITIONS)
+                                    }
+                                }
                             ) {
                                 Text(
-                                    text = "Box ${index + 1}",
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onPrimary,
-                                    modifier = Modifier.align(Alignment.Center)
+                                    text = "Terms & Conditions",
+                                    modifier = Modifier,
+                                    color = Color.Blue
                                 )
                             }
-
                         }
                     }
                 }
 
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(dimensionResource(R.dimen.medium))
-                ) {
-                    LazyColumn {
-                        items(navigationItemUiState.items) { item ->
-                            Spacer(Modifier.padding(dimensionResource(R.dimen.xsmall)))
-                            NavigationDrawerItem(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = dimensionResource(R.dimen.small)),
-                                label = { Text(text = stringResource(id = item.titleRes)) },
-                                icon = {
-                                    Icon(
-                                        painter = painterResource(id = item.iconRes),
-                                        contentDescription = null
-                                    )
-                                },
-                                selected = false,
-                                onClick = {
-                                    navController.navigate(route = item.route)
-                                    scope.launch { drawerState.close() }
-                                },
-                                colors = NavigationDrawerItemDefaults
-                                    .colors(
-                                        unselectedContainerColor = Color.Transparent,
-                                        selectedContainerColor = Color.Transparent,
-                                        unselectedIconColor = LocalContentColor.current,
-                                        selectedIconColor = LocalContentColor.current,
-                                        unselectedTextColor = LocalContentColor.current,
-                                        selectedTextColor = LocalContentColor.current
-                                    )
-                            )
-                            Spacer(Modifier.padding(dimensionResource(R.dimen.xsmall)))
-                        }
-                    }
-                }
             }
         },
         gesturesEnabled = true,

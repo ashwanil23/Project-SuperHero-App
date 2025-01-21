@@ -13,4 +13,5 @@ object Routes {
     const val NOTIFICATIONS = "notifications"
     const val ACHIEVEMENTS = "achievements"
     const val LOGOUT = "logout"
+    const val TERMS_AND_CONDITIONS = "terms"
 }

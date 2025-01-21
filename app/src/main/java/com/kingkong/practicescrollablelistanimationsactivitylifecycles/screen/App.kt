@@ -254,7 +254,7 @@ fun SuperHeroAppTopBar(
                     tint = Color.Red
                 )
             }
-            ThemeToggleButton( isDarkTheme = isDarkTheme, onToggleTheme = onToggleTheme)
+//            ThemeToggleButton( isDarkTheme = isDarkTheme, onToggleTheme = onToggleTheme)
 
 //            IconButton(onClick = {onMenuClicked()}) {
 //                Icon(

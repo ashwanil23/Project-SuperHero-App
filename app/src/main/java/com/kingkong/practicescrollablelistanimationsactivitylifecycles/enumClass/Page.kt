@@ -10,5 +10,6 @@ enum class Page {
     FEEDBACK,
     NOTIFICATIONS,
     ACHIEVEMENTS,
+    TERMS_AND_CONDITIONS,
     LOGOUT,
 }
