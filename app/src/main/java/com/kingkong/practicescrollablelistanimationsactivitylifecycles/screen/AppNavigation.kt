@@ -65,7 +65,13 @@ fun MyAppNavigation(
             UserProfile(modifier = modifier)
         }
         composable(route = Routes.FAVORITES){
-            Favorites(modifier = modifier)
+            Favorites(
+                homeScreenViewModel,
+                modifier = modifier,
+                onHeroSelected = { heroId ->
+                    navController.navigate("hero_profile/$heroId")
+                }
+            )
         }
         composable(route = Routes.EXPLORE){
             Explore(modifier = modifier)

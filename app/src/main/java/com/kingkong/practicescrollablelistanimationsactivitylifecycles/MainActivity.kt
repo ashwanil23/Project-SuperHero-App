@@ -71,9 +71,10 @@ fun ScrollableHeroListItemPreview() {
         R.string.hero1,
         R.string.description1,
         R.drawable.android_superhero1,
-        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
+        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3),
+        isFav = false
     )
     PracticeScrollableListAnimationsActivityLifeCyclesTheme {
-        ScrollableHeroListItem(hero = hero, onClick = {})
+        ScrollableHeroListItem(hero = hero, onClick = {}, onFavoriteClick = {})
     }
 }

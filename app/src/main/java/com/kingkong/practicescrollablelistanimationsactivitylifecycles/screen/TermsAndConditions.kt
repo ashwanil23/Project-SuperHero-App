@@ -31,6 +31,8 @@ fun TermsAndConditionsScreen(
         item {
             Text(
                 text = stringResource(R.string.Terms_Conditions_Title),
+                style = androidx.compose.material.MaterialTheme.typography.h4, // Use a larger text style for the heading
+                modifier = Modifier.padding(bottom = 16.dp) // Add space below the heading
             )
             Text(
                 text = stringResource(id = R.string.terms_conditions),

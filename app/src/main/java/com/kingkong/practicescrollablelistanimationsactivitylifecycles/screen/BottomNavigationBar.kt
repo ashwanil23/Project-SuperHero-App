@@ -2,22 +2,24 @@ package com.kingkong.practicescrollablelistanimationsactivitylifecycles.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigation
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Icon
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.navigation.NavController
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.R
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.enumClass.Page
 import com.kingkong.practicescrollablelistanimationsactivitylifecycles.viewmodel.NavigationItemViewModel
@@ -27,6 +29,8 @@ fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel,isDarkTheme
     val navigationUiState by navigationViewModel.uiState.collectAsState()
 
     Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = dimensionResource(R.dimen.Large)),
@@ -44,7 +48,7 @@ fun BottomNavigationBar(navigationViewModel: NavigationItemViewModel,isDarkTheme
                 icon = {
                     Icon(
                         painterResource(id = R.drawable.ic_list),
-                        contentDescription = "Hero List"
+                        contentDescription = "Hero List",
                     )
                 },
                 label = { Text("Hero List") }

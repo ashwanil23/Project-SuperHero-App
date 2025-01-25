@@ -155,7 +155,7 @@ fun SuperHeroApp(
     windowSize: WindowWidthSizeClass,
     navigationViewModel: NavigationItemViewModel = viewModel()
 ) {
-    val bottomNavUiState by navigationViewModel.uiState.collectAsState()
+//    val navItemUiState by navigationItemViewModel.uiState.collectAsState()
     var isMenuClicked by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -189,7 +189,9 @@ fun SuperHeroApp(
                 },
                 bottomBar = {
                     if (navigationType == AppNavType.BOTTOM_NAVIGATION) {
-                        BottomNavigationBar(navigationViewModel, isDarkTheme = isDarkTheme)
+                        BottomNavigationBar(navigationViewModel = navigationViewModel,
+                            isDarkTheme = isDarkTheme
+                        )
                     }
                 }
             ) { innerPadding ->
@@ -221,6 +223,7 @@ fun SuperHeroAppTopBar(
     var notificationClicked by rememberSaveable {
         mutableStateOf(false)
     }
+
     CenterAlignedTopAppBar(
         title = { Text(
             text = "Super Hero",
@@ -244,7 +247,7 @@ fun SuperHeroAppTopBar(
             }
         },
         actions = {
-            IconButton(onClick = { notificationClicked = !notificationClicked }) {
+            IconButton(onClick = {notificationClicked = !notificationClicked}) {
                 if (!notificationClicked) Icon(imageVector = Icons.Outlined.Notifications,
                     contentDescription = "Notifications",
                     modifier = Modifier.size(28.dp)

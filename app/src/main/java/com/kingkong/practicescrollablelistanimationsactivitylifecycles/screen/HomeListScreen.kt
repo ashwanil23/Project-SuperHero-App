@@ -20,6 +20,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,6 +37,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -49,6 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
@@ -151,6 +154,7 @@ fun ScrollableHeroList(
                 ScrollableHeroListItem(
                     hero = hero,
                     onClick = {onHeroSelected(hero.id)},
+                    onFavoriteClick = {heroId -> homeScreenViewModel.toggleFavorite(hero.id)},
                     modifier = Modifier
                         .padding(
                             horizontal = dimensionResource(R.dimen.xsmall),
@@ -175,6 +179,7 @@ fun ScrollableHeroListItem(
     modifier: Modifier = Modifier,
     hero: Hero,
     onClick:()-> Unit,
+    onFavoriteClick: (Hero) -> Unit
 ) {
     var expanded by rememberSaveable { mutableStateOf(false) }
 
@@ -211,7 +216,7 @@ fun ScrollableHeroListItem(
         ) { targetExpanded ->
             if (targetExpanded) {
                 Log.i(TAG,"Expanded")
-                ExpandedHeroContent(hero = hero,onClick)
+                ExpandedHeroContent(hero = hero,onClick,onFavoriteClick)
 
             } else {
                 HeroIconContent(hero = hero)
@@ -257,7 +262,8 @@ fun HeroIconContent(
 @Composable
 fun ExpandedHeroContent(
     hero: Hero,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onFavoriteClick: (Hero) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -281,10 +287,30 @@ fun ExpandedHeroContent(
             text = stringResource(id = hero.descriptionRes),
             style = MaterialTheme.typography.bodyLarge
         )
-        TextButton(
-            onClick = onClick
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("Explore ${stringResource(id = hero.nameRes)}")
+            TextButton(
+                onClick = onClick
+            ) {
+                Text("Explore ${stringResource(id = hero.nameRes)}")
+            }
+            Spacer(Modifier.weight(1f))
+            Icon(
+                painter = painterResource(
+                    id =
+                    if (hero.isFav)
+                        R.drawable.ic_star_filled
+                    else
+                        R.drawable.ic_star_outline
+                ),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(dimensionResource(R.dimen.mediumPlus))
+                    .clickable { onFavoriteClick(hero) },
+                tint = if (hero.isFav) Color.Magenta else Color.Gray
+            )
         }
     }
 }
@@ -297,10 +323,11 @@ fun ScrollableHeroListItemPreviewHomeScreen() {
         R.string.hero1,
         R.string.description1,
         R.drawable.android_superhero1,
-        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3)
+        additionalImages = listOf(R.drawable.image1, R.drawable.image2, R.drawable.image3),
+        isFav = false
     )
     PracticeScrollableListAnimationsActivityLifeCyclesTheme {
-        ScrollableHeroListItem(hero = hero, onClick = {})
+        ScrollableHeroListItem(hero = hero, onClick = {}, onFavoriteClick = {})
     }
 }
 

@@ -78,7 +78,7 @@
     <string name="logout">Logout</string>
     <string name="support">Support</string>
 
-    <string name="Terms_Conditions_Title">TERMS AND CONDITIONS\n\n</string>
+    <string name="Terms_Conditions_Title">TERMS &amp; CONDITIONS</string>
     <string name="terms_conditions">
     Welcome to [Your App Name]! By using our services, you agree to comply with and be bound by the following terms and conditions of use. Please read these terms carefully before using the application. If you do not agree with any part of these terms, please do not use our services.\n\n
     1. Acceptance of Terms\n

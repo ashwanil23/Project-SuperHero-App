@@ -5,6 +5,7 @@
     <dimen name="xxsmall">2.dp</dimen>
     <dimen name="xxxsmall">1.dp</dimen>
     <dimen name="medium">16.dp</dimen>
+    <dimen name="mediumPlus">24.dp</dimen>
     <dimen name="large">28.dp</dimen>
     <dimen name="Large">44.dp</dimen>
     <dimen name="xlarge">56.dp</dimen>

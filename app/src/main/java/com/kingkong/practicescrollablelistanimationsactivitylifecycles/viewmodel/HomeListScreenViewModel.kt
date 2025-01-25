@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 data class HomeScreenUiState(
     val heroes: List<Hero> = HeroDataResource.heroList,
+    val favorites: List<Hero> = emptyList(),
     val isShowingHomepage: Boolean = true
 )
 class HomeScreenViewModel: ViewModel() {
@@ -24,5 +25,15 @@ class HomeScreenViewModel: ViewModel() {
 
     fun getHeroById(heroId: Int): Hero? {
         return _uiState.value.heroes.find { it.id == heroId }
+    }
+
+    fun toggleFavorite(heroId: Int){
+        val currentHeroes = _uiState.value.heroes
+        val updatedHeroes = currentHeroes.map{
+            hero->
+            if(hero.id == heroId) hero.copy(isFav = !hero.isFav) else hero
+        }
+        val favoritesHeroes = updatedHeroes.filter { it.isFav }
+        _uiState.value = _uiState.value.copy(heroes = updatedHeroes, favorites = favoritesHeroes)
     }
 }
